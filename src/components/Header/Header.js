@@ -8,35 +8,16 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-const styles = {
-  root: {
-    flexGrow: 1,
-  },
-  flex: {
-    flex: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-};
+import styles from './Header.module.css';
 
-function Header(props) {
-  const { classes } = props;
+function Header() {
   return (
-    <div className={classes.root}>
+    <div className={styles.root}>
       <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="Menu"
-          >
+        <Toolbar className={styles.toolbar}>
+          <IconButton color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="title" color="inherit" className={classes.flex}>
-            Title
-          </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
@@ -44,8 +25,4 @@ function Header(props) {
   );
 }
 
-Header.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Header);
+export default Header;

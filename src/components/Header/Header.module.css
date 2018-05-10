@@ -1,0 +1,11 @@
+.root {
+  flex-grow: 1;
+}
+
+.flex {
+  flex: 1;
+}
+
+.toolbar {
+  justify-content: space-between;
+}
