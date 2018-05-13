@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 
 import { firestore } from '../../configs/firebase';
 
-const zxc = {
-  exercises: ['bench'],
-  bench: {
-    cyclesDone: 0,
-    categoriesFinished: ['hypertrophy'],
-  },
+const details = {
+  workoutCategories: ['hypertrophy', 'power', 'strength'],
+  currentSesh: [
+    {
+      name: 'bench',
+      currentSet: 0,
+    },
+  ],
 };
 
 class FirebaseDbProvider extends Component {

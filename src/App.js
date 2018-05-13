@@ -9,25 +9,6 @@ import styles from './App.module.css';
 import FirebaseDbProvider from './components/FirebaseDbProvider';
 import WorkoutPlan from './components/WorkoutPlan';
 
-const details = {
-  workoutCategories: ['hypertrophy', 'power', 'strength'],
-  summary: {
-    uid: {
-      exercises: ['bench'],
-      bench: {
-        cyclesDone: 0,
-        categoriesFinished: ['hypertrophy'],
-      },
-    },
-  },
-  currentSesh: [
-    {
-      name: 'bench',
-      currentSet: 0,
-    },
-  ],
-};
-
 class App extends Component {
   render() {
     return (

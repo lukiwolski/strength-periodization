@@ -8,21 +8,18 @@ const styles = theme => ({
   root: theme.mixins.gutters({
     paddingTop: 16,
     paddingBottom: 16,
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
   }),
 });
 
 function Overview(props) {
   const { classes } = props;
   return (
-    <div>
-      <Paper className={classes.root} elevation={4}>
+    <div className={styles.Overview}>
+      <Paper className={classes.root}>
         <Typography variant="headline" component="h3">
-          This is a sheet of paper.
-        </Typography>
-        <Typography component="p">
-          Paper can be used to build surface or other elements for your
-          application.
+          This will be the progress Overview Panel
         </Typography>
       </Paper>
     </div>

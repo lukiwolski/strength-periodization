@@ -1,21 +1,21 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ExerciseSelect from '../ExerciseSelect';
 import Overview from '../Overview';
 import ExerciseCard from '../ExerciseCard';
 
-class WorkoutPlan extends PureComponent {
-  render() {
-    return (
-      <Fragment>
-        <ExerciseSelect />
-        <Overview />
-        <ExerciseCard />
-      </Fragment>
-    );
-  }
-}
+const WorkoutPlan = ({ workoutPlan }) => {
+  return (
+    <Fragment>
+      <ExerciseSelect exercises={workoutPlan.exercises} />
+      <ExerciseCard />
+      <Overview />
+    </Fragment>
+  );
+};
 
-WorkoutPlan.propTypes = {};
+WorkoutPlan.propTypes = {
+  workoutPlan: PropTypes.object,
+};
 
 export default WorkoutPlan;
