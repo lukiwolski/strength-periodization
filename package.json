@@ -4,9 +4,15 @@
   "private": true,
   "dependencies": {
     "@material-ui/icons": "^1.0.0-beta.43",
+    "eslint-plugin-prettier": "^2.6.0",
+    "firebase": "^5.0.1",
+    "firebaseui": "^3.0.0",
     "material-ui": "^1.0.0-beta.45",
+    "ramda": "^0.25.0",
+    "ramda-fantasy": "^0.8.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-router": "^4.2.0",
     "react-scripts-cssmodules": "1.1.10"
   },
   "scripts": {
@@ -14,5 +20,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-config-react-app": "^2.1.0",
+    "prettier": "1.12.1"
   }
 }

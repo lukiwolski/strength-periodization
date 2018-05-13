@@ -1,16 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-});
+import styles from './ExerciseSelect.module.css';
 
 const options = [
   'Show some love to Material-UI',
@@ -40,11 +33,10 @@ class ExerciseSelect extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
     const { anchorEl } = this.state;
 
     return (
-      <div className={classes.root}>
+      <div className={styles.ExerciseSelect}>
         <List component="nav">
           <ListItem
             button
@@ -81,8 +73,4 @@ class ExerciseSelect extends React.Component {
   }
 }
 
-ExerciseSelect.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(ExerciseSelect);
+export default ExerciseSelect;

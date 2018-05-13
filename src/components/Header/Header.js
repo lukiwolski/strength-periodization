@@ -1,12 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import React, { Fragment } from 'react';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import Typography from 'material-ui/Typography';
+import { prop } from 'ramda';
+
+import { UserContext } from '../../contexts';
 
 import styles from './Header.module.css';
 
@@ -15,10 +14,25 @@ function Header() {
     <div className={styles.root}>
       <AppBar position="static">
         <Toolbar className={styles.toolbar}>
-          <IconButton color="inherit" aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
-          <Button color="inherit">Login</Button>
+          <UserContext.Consumer>
+            {({ user, handleSignOut, handleSignIn }) => {
+              const displayName = prop('displayName', user);
+              return (
+                <Fragment>
+                  <Typography component="p" color="inherit">
+                    {displayName}
+                  </Typography>
+
+                  <Button
+                    onClick={displayName ? handleSignOut : handleSignIn}
+                    color="inherit"
+                  >
+                    {displayName ? 'logout' : 'login'}
+                  </Button>
+                </Fragment>
+              );
+            }}
+          </UserContext.Consumer>
         </Toolbar>
       </AppBar>
     </div>

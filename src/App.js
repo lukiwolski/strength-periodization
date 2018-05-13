@@ -1,35 +1,61 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import CssBaseline from 'material-ui/CssBaseline';
-import Button from 'material-ui/Button';
+
 import Header from './components/Header';
-import ExerciseCard from './components/ExerciseCard';
-import ExerciseSelect from './components/ExerciseSelect';
-import Overview from './components/Overview';
+import FirebaseUserProvider from './components/FirebaseUserProvider';
+import { UserContext } from './contexts';
 
 import styles from './App.module.css';
+import FirebaseDbProvider from './components/FirebaseDbProvider';
+import WorkoutPlan from './components/WorkoutPlan';
 
-const currentSesh = {
-  bench: {
-    currentWorkout: null,
-    completedWorkouts: [],
-    currentSet: 0,
-    cycle: 0,
+const details = {
+  workoutCategories: ['hypertrophy', 'power', 'strength'],
+  summary: {
+    uid: {
+      exercises: ['bench'],
+      bench: {
+        cyclesDone: 0,
+        categoriesFinished: ['hypertrophy'],
+      },
+    },
   },
+  currentSesh: [
+    {
+      name: 'bench',
+      currentSet: 0,
+    },
+  ],
 };
 
 class App extends Component {
-  static state = {
-    workouts: ['hypertrophy', 'power', 'strength'],
-  };
-
   render() {
     return (
       <div className={styles.App}>
-        <CssBaseline />
-        <Header />
-        <ExerciseSelect />
-        <Overview />
-        <ExerciseCard />
+        <FirebaseUserProvider>
+          <Fragment>
+            <CssBaseline />
+            <Header />
+            <UserContext.Consumer>
+              {({ user }) =>
+                user ? (
+                  <FirebaseDbProvider
+                    uid={user.uid}
+                    render={({ workoutPlan }) =>
+                      workoutPlan ? (
+                        <WorkoutPlan workoutPlan={workoutPlan} />
+                      ) : (
+                        <div>Loader or something</div>
+                      )
+                    }
+                  />
+                ) : (
+                  <div>Logo or something</div>
+                )
+              }
+            </UserContext.Consumer>
+          </Fragment>
+        </FirebaseUserProvider>
       </div>
     );
   }
