@@ -22,7 +22,7 @@ class App extends Component {
                 user ? (
                   <FirebaseDbProvider
                     uid={user.uid}
-                    render={({ workoutPlan }) =>
+                    render={workoutPlan =>
                       workoutPlan ? (
                         <WorkoutPlan workoutPlan={workoutPlan} />
                       ) : (

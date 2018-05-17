@@ -20,7 +20,8 @@ class ExerciseSelect extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleMenuItemClick = (event, index, updateSelectedStatus) => {
+  handleMenuItemClick = (event, index, updateSelectedStatus, exerciseList) => {
+    updateSelectedStatus(exerciseList[index]);
     this.setState({ selectedIndex: index, anchorEl: null });
   };
 
@@ -34,8 +35,11 @@ class ExerciseSelect extends React.Component {
     return (
       <div className={styles.ExerciseSelect}>
         <SessionContext.Consumer>
-          {({ exercises, updateSelectedStatus, incrementRep }) => {
-            const exerciseList = ['Select an exercise', ...exercises];
+          {({ workoutPlan, updateSelectedStatus, incrementSet }) => {
+            const exerciseList = [
+              'Select an exercise',
+              ...workoutPlan.exercises,
+            ];
 
             return (
               exerciseList.length > 1 && (
@@ -68,7 +72,12 @@ class ExerciseSelect extends React.Component {
                         disabled={index === 0}
                         selected={index === this.state.selectedIndex}
                         onClick={event =>
-                          this.handleMenuItemClick(event, index, updateSelectedStatus)
+                          this.handleMenuItemClick(
+                            event,
+                            index,
+                            updateSelectedStatus,
+                            exerciseList
+                          )
                         }
                       >
                         {option}
@@ -89,9 +98,5 @@ class ExerciseSelect extends React.Component {
     );
   }
 }
-
-ExerciseSelect.propTypes = {
-  exercises: PropTypes.array.isRequired,
-};
 
 export default ExerciseSelect;
