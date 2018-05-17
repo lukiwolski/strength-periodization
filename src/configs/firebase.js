@@ -12,10 +12,14 @@ const config = {
 };
 
 firebase.initializeApp(config);
+firebase.firestore().settings({ timestampsInSnapshots: true });
+
+export const firestore = firebase
+  .firestore()
+  .enablePersistence()
+  .then(() => firebase.firestore())
+  .catch(error => firebase.firestore());
 
 export const provider = new firebase.auth.GoogleAuthProvider();
 export const auth = firebase.auth();
-export const firestore = firebase.firestore();
-firestore.settings({ timestampsInSnapshots: true });
-
 export default firebase;

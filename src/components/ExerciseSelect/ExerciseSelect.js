@@ -6,6 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from 'material-ui/Button';
 
 import styles from './ExerciseSelect.module.css';
+import { SessionContext } from '../../contexts';
 
 class ExerciseSelect extends React.Component {
   state = {
@@ -19,7 +20,7 @@ class ExerciseSelect extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleMenuItemClick = (event, index) => {
+  handleMenuItemClick = (event, index, updateSelectedStatus) => {
     this.setState({ selectedIndex: index, anchorEl: null });
   };
 
@@ -29,52 +30,61 @@ class ExerciseSelect extends React.Component {
 
   render() {
     const { anchorEl } = this.state;
-    const exercisesList = ['Select an exercise', ...this.props.exercises];
 
     return (
       <div className={styles.ExerciseSelect}>
-        {exercisesList.length > 1 && (
-          <div className={styles.ExerciseList}>
-            <List component="nav">
-              <ListItem
-                button
-                aria-haspopup="true"
-                aria-controls="lock-menu"
-                aria-label="When device is locked"
-                onClick={this.handleClickListItem}
-              >
-                <ListItemText
-                  secondary="Click to change"
-                  primary={`Current Exercise: ${
-                    exercisesList[this.state.selectedIndex]
-                  }`}
-                />
-              </ListItem>
-            </List>
-            <Menu
-              id="lock-menu"
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={this.handleClose}
-            >
-              {exercisesList.map((option, index) => (
-                <MenuItem
-                  key={option}
-                  disabled={index === 0}
-                  selected={index === this.state.selectedIndex}
-                  onClick={event => this.handleMenuItemClick(event, index)}
-                >
-                  {option}
-                </MenuItem>
-              ))}
-            </Menu>
-          </div>
-        )}
+        <SessionContext.Consumer>
+          {({ exercises, updateSelectedStatus, incrementRep }) => {
+            const exerciseList = ['Select an exercise', ...exercises];
+
+            return (
+              exerciseList.length > 1 && (
+                <div className={styles.ExerciseList}>
+                  <List component="nav">
+                    <ListItem
+                      button
+                      aria-haspopup="true"
+                      aria-controls="lock-menu"
+                      aria-label="When device is locked"
+                      onClick={this.handleClickListItem}
+                    >
+                      <ListItemText
+                        secondary="Click to change"
+                        primary={`Current Exercise: ${
+                          exerciseList[this.state.selectedIndex]
+                        }`}
+                      />
+                    </ListItem>
+                  </List>
+                  <Menu
+                    id="lock-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={this.handleClose}
+                  >
+                    {exerciseList.map((option, index) => (
+                      <MenuItem
+                        key={option}
+                        disabled={index === 0}
+                        selected={index === this.state.selectedIndex}
+                        onClick={event =>
+                          this.handleMenuItemClick(event, index, updateSelectedStatus)
+                        }
+                      >
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </div>
+              )
+            );
+          }}
+        </SessionContext.Consumer>
         <div className={styles.AddIcon}>
           <Button variant="fab" color="secondary">
             <AddIcon />
           </Button>
-        </div>
+        </div>;
       </div>
     );
   }
