@@ -20,8 +20,8 @@ class ExerciseSelect extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleMenuItemClick = (event, index, updateSelectedStatus, exerciseList) => {
-    updateSelectedStatus(exerciseList[index]);
+  handleMenuItemClick = (event, index, selectExercise, exerciseList) => {
+    selectExercise(exerciseList[index]);
     this.setState({ selectedIndex: index, anchorEl: null });
   };
 
@@ -35,7 +35,7 @@ class ExerciseSelect extends React.Component {
     return (
       <div className={styles.ExerciseSelect}>
         <SessionContext.Consumer>
-          {({ workoutPlan, updateSelectedStatus, incrementSet }) => {
+          {({ workoutPlan, selectExercise, exerciseInProgress, isLocked }) => {
             const exerciseList = [
               'Select an exercise',
               ...workoutPlan.exercises,
@@ -50,13 +50,19 @@ class ExerciseSelect extends React.Component {
                       aria-haspopup="true"
                       aria-controls="lock-menu"
                       aria-label="When device is locked"
-                      onClick={this.handleClickListItem}
+                      onClick={isLocked ? undefined : this.handleClickListItem}
                     >
                       <ListItemText
-                        secondary="Click to change"
-                        primary={`Current Exercise: ${
-                          exerciseList[this.state.selectedIndex]
-                        }`}
+                        secondary={
+                          isLocked
+                            ? 'Please finish to change '
+                            : 'Click to change'
+                        }
+                        primary={
+                          exerciseInProgress
+                            ? `Current Exercise: ${exerciseInProgress}`
+                            : 'Select an exercise'
+                        }
                       />
                     </ListItem>
                   </List>
@@ -75,7 +81,7 @@ class ExerciseSelect extends React.Component {
                           this.handleMenuItemClick(
                             event,
                             index,
-                            updateSelectedStatus,
+                            selectExercise,
                             exerciseList
                           )
                         }

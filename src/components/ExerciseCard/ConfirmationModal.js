@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';
 import blue from 'material-ui/colors/blue';
 import Button from 'material-ui/Button';
+import { SessionContext } from '../../contexts';
 
 const styles = theme => ({
   avatar: {
@@ -16,43 +17,41 @@ const styles = theme => ({
 });
 
 class ConfirmationModal extends React.Component {
-  handleClose = () => {
-    this.props.onClose();
-  };
-
-  handleConfirmClick = () => {};
-
   render() {
-    const { classes, onClose, selectedValue, ...other } = this.props;
+    const { classes, onClose, ...other } = this.props;
 
     return (
-      <Dialog
-        onClose={this.handleClose}
-        aria-labelledby="simple-dialog-title"
-        {...other}
-      >
-        <DialogTitle id="simple-dialog-title">
-          Confirm completing a set ?
-        </DialogTitle>
+      <SessionContext.Consumer>
+        {({ incrementSet }) => (
+          <Dialog
+            onClose={this.handleClose}
+            aria-labelledby="simple-dialog-title"
+            {...other}
+          >
+            <DialogTitle id="simple-dialog-title">
+              Confirm completing a set ?
+            </DialogTitle>
 
-        <Button
-          variant="raised"
-          color="primary"
-          size="large"
-          onClick={this.handleListItemClick}
-          className={classes.button}
-        >
-          YES
-        </Button>
-        <Button
-          variant="raised"
-          color="secondary"
-          onClick={this.handleClose}
-          className={classes.button}
-        >
-          No
-        </Button>
-      </Dialog>
+            <Button
+              variant="raised"
+              color="primary"
+              size="large"
+              onClick={incrementSet}
+              className={classes.button}
+            >
+              YES
+            </Button>
+            <Button
+              variant="raised"
+              color="secondary"
+              onClick={this.props.onClose}
+              className={classes.button}
+            >
+              Cancel
+            </Button>
+          </Dialog>
+        )}
+      </SessionContext.Consumer>
     );
   }
 }
@@ -60,7 +59,6 @@ class ConfirmationModal extends React.Component {
 ConfirmationModal.propTypes = {
   classes: PropTypes.object.isRequired,
   onClose: PropTypes.func,
-  selectedValue: PropTypes.string,
 };
 
 export default withStyles(styles)(ConfirmationModal);

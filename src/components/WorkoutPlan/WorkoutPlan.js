@@ -1,23 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Either } from 'ramda-fantasy';
+
 import ExerciseSelect from '../ExerciseSelect';
 import Overview from '../Overview';
 import ExerciseCard from '../ExerciseCard';
 import { SessionContext } from '../../contexts';
-
-import { prop, without, head, compose } from 'ramda';
-
-import { trainingTypes, workoutCategories } from '../../configs/trainingTypes';
-
-const buildWorkoutPlan = (name, workoutPlan) => {
-  const workout = prop(name, workoutPlan);
-  const type = head(without(workout.categoriesFinished, workoutCategories));
-
-  return {
-    type,
-    singeRepMax: workout.singleRepMax,
-  };
-};
+import getRoutineValues from './getRoutineValues';
+import handleSetUpdate from './handleSetUpdate';
 
 class WorkoutPlan extends Component {
   state = {
@@ -28,36 +18,50 @@ class WorkoutPlan extends Component {
     reps: null,
     weight: null,
     type: null,
+    errorMessage: null,
+    isLocked: null,
   };
 
-  updateSelectedStatus = name => {
-    const workout = buildWorkoutPlan(name, this.state.workoutPlan);
+  selectExercise = name => {
+    const routineValues = getRoutineValues(name, this.state.workoutPlan);
 
-    this.setState({
-      exerciseInProgress: name,
-      type: workout.type,
-      weight: workout.singeRepMax,
-      sets: trainingTypes[workout.type].sets,
-      reps: trainingTypes[workout.type].reps,
-    });
+    return Either.isLeft(routineValues)
+      ? this.setState({
+          errorMessage: routineValues.value.errorMessage,
+        })
+      : this.setState({
+          exerciseInProgress: name,
+          ...routineValues,
+        });
   };
 
   incrementSet = () => {
-    this.setState({ setsDone: this.state.setsDone + 1 });
+    this.setState({
+      ...handleSetUpdate(this.state),
+    });
   };
 
   render() {
-    return (
+    return this.state.errorMessage ? (
+      <div>{this.state.errorMessage}</div>
+    ) : (
       <SessionContext.Provider
         value={{
           ...this.state,
-          updateSelectedStatus: this.updateSelectedStatus,
+          selectExercise: this.selectExercise,
           incrementSet: this.incrementSet,
         }}
       >
         <ExerciseSelect />
-        <ExerciseCard />
-        <Overview />
+
+        {this.state.exerciseInProgress ? (
+          <Fragment>
+            <ExerciseCard />
+            <Overview />
+          </Fragment>
+        ) : (
+          <div>Please Select an Exercise</div>
+        )}
       </SessionContext.Provider>
     );
   }

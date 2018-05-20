@@ -1,4 +1,4 @@
-export const trainingTypes = {
+export const categoryDetails = {
   hypertrophy: {
     sets: 3,
     reps: 8,

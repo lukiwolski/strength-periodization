@@ -25,7 +25,9 @@ class FirebaseUserProvider extends Component {
   };
 
   componentDidMount() {
-    auth.onAuthStateChanged(user => this.setState({ user }));
+    auth.onAuthStateChanged(user => {
+      return this.setState({ user });
+    });
   }
 
   render() {

@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Card, { CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import ConfirmationModal from './ConfirmationModal';
+import { SessionContext } from '../../contexts';
 
 const styles = {
   card: {
@@ -24,43 +25,44 @@ class ExerciseCard extends PureComponent {
   };
 
   handleClickOpen = () => {
-    this.setState({
-      open: true,
-    });
+    this.setState({ open: true });
   };
 
   handleClose = value => {
-    this.setState({ selectedValue: value, open: false });
+    this.setState({ open: false });
   };
 
   render() {
     const { classes } = this.props;
 
     return (
-      <div>
-        <Card className={classes.card} onClick={this.handleClickOpen}>
-          <CardContent>
-            <Typography className={classes.title} color="textSecondary">
-              workout type
-            </Typography>
-            <Typography variant="headline" component="h2">
-              Current set: 0/8
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-              Weight: 100kg
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-              Sets: 5
-            </Typography>
-          </CardContent>
-        </Card>
+      <SessionContext.Consumer>
+        {({ exerciseInProgress, type, setsDone, sets, weight }) => (
+          <Fragment>
+            <Card className={classes.card} onClick={this.handleClickOpen}>
+              <CardContent>
+                <Typography className={classes.title} color="textSecondary">
+                  {type}
+                </Typography>
+                <Typography variant="headline" component="h2">
+                  Current set: {setsDone || 0} / {sets}
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Weight: {weight}
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Sets: {sets}
+                </Typography>
+              </CardContent>
+            </Card>
 
-        <ConfirmationModal
-          selectedValue={this.state.selectedValue}
-          open={this.state.open}
-          onClose={this.handleClose}
-        />
-      </div>
+            <ConfirmationModal
+              open={this.state.open}
+              onClose={this.handleClose}
+            />
+          </Fragment>
+        )}
+      </SessionContext.Consumer>
     );
   }
 }
