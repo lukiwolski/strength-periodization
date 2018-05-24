@@ -5,9 +5,6 @@ import { Either } from 'ramda-fantasy';
 import ExerciseSelect from '../ExerciseSelect';
 import Overview from '../Overview';
 import ExerciseCard from '../ExerciseCard';
-import { SessionContext } from '../../contexts';
-import getRoutineValues from './getRoutineValues';
-import handleSetUpdate from './handleSetUpdate';
 
 class WorkoutPlan extends Component {
   state = {
@@ -22,47 +19,21 @@ class WorkoutPlan extends Component {
     isLocked: null,
   };
 
-  selectExercise = name => {
-    const routineValues = getRoutineValues(name, this.state.workoutPlan);
-
-    return Either.isLeft(routineValues)
-      ? this.setState({
-          errorMessage: routineValues.value.errorMessage,
-        })
-      : this.setState({
-          exerciseInProgress: name,
-          ...routineValues,
-        });
-  };
+  selectExercise = name => {};
 
   incrementSet = () => {
     this.setState({
-      ...handleSetUpdate(this.state),
+      // ...handleSetUpdate(this.state),
     });
   };
 
   render() {
-    return this.state.errorMessage ? (
-      <div>{this.state.errorMessage}</div>
-    ) : (
-      <SessionContext.Provider
-        value={{
-          ...this.state,
-          selectExercise: this.selectExercise,
-          incrementSet: this.incrementSet,
-        }}
-      >
+    return (
+      <Fragment>
         <ExerciseSelect />
-
-        {this.state.exerciseInProgress ? (
-          <Fragment>
-            <ExerciseCard />
-            <Overview />
-          </Fragment>
-        ) : (
-          <div>Please Select an Exercise</div>
-        )}
-      </SessionContext.Provider>
+        <ExerciseCard />
+        <Overview />
+      </Fragment>
     );
   }
 }

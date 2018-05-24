@@ -8,15 +8,30 @@ import {
   chain,
   identity,
 } from 'ramda';
-import {
-  categoryDetails,
-  workoutCategories,
-} from '../../configs/trainingTypes';
 import { Either, Maybe } from 'ramda-fantasy';
 
 const ERROR_MESSAGE = 'Something went wrong, selected exercise doesnt exist';
 
 const INCREMENT_PER_CYCLE = 2.5;
+
+const trainingBlocks = {
+  hypertrophy: {
+    sets: 3,
+    reps: 8,
+    base: 60,
+  },
+  power: {
+    sets: 5,
+    reps: 5,
+    base: 70,
+  },
+  strength: {
+    sets: 6,
+    reps: 3,
+    base: 80,
+  },
+};
+const priorities = ['hypertrophy', 'power', 'strength'];
 
 const matchWorkoutPlan = curry((errorMessage, name, workoutPlan) => {
   return workoutPlan.hasOwnProperty(name)
@@ -24,7 +39,7 @@ const matchWorkoutPlan = curry((errorMessage, name, workoutPlan) => {
     : Either.Left({ errorMessage });
 });
 
-const fallbackToFirst = either(identity, x => head(workoutCategories));
+const fallbackToFirst = either(identity, x => head(priorities));
 
 const removeFinished = curry((workoutCategories, category) =>
   without(category, workoutCategories)
@@ -33,7 +48,7 @@ const removeFinished = curry((workoutCategories, category) =>
 const decideCategory = compose(
   fallbackToFirst,
   head,
-  removeFinished(workoutCategories),
+  removeFinished(priorities),
   prop('categoriesFinished')
 );
 
@@ -57,16 +72,25 @@ const buildRoutine = categoryDetails => workoutPlan => {
   };
 };
 
-const addCurrentCategory = workoutPlan =>
+const selectCurrentCategory = workoutPlan =>
   Maybe({
     ...workoutPlan,
     currentCategory: decideCategory(workoutPlan),
   });
 
-const getRoutineValues = compose(
-  chain(buildRoutine(categoryDetails)),
-  chain(addCurrentCategory),
-  matchWorkoutPlan(ERROR_MESSAGE)
-);
+// const getExerciseDetails = compose(
+//   chain(buildRoutine(trainingBlocks)),
+//   chain(selectCurrentCategory),
+//   matchWorkoutPlan(ERROR_MESSAGE)
+// );
 
-export default getRoutineValues;
+const getExerciseDetails = (name, profile) => {
+  const exerciseDetails = profile[name];
+  const currentCategory = decideCategory(exerciseDetails);
+
+  debugger;
+
+  return {};
+};
+
+export default getExerciseDetails;

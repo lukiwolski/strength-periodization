@@ -2,41 +2,33 @@ import React, { Component, Fragment } from 'react';
 import CssBaseline from 'material-ui/CssBaseline';
 
 import Header from './components/Header';
-import FirebaseUserProvider from './components/FirebaseUserProvider';
-import { UserContext } from './contexts';
 
 import styles from './App.module.css';
-import FirebaseDbProvider from './components/FirebaseDbProvider';
-import WorkoutPlan from './components/WorkoutPlan';
+import Auth, { AuthContext } from './components/Firebase/Auth';
+import Firestore from './components/Firebase/Firestore';
+import WorkoutPlan from './components/WorkoutPlan/WorkoutPlan';
 
 class App extends Component {
   render() {
     return (
       <div className={styles.App}>
-        <FirebaseUserProvider>
+        <Auth>
           <Fragment>
             <CssBaseline />
             <Header />
-            <UserContext.Consumer>
+            <AuthContext.Consumer>
               {({ user }) =>
                 user ? (
-                  <FirebaseDbProvider
-                    uid={user.uid}
-                    render={workoutPlan =>
-                      workoutPlan ? (
-                        <WorkoutPlan workoutPlan={workoutPlan} />
-                      ) : (
-                        <div>Loader or something</div>
-                      )
-                    }
-                  />
+                  <Firestore user={user}>
+                    <WorkoutPlan />
+                  </Firestore>
                 ) : (
-                  <div>Logo or something</div>
+                  <div>no user</div>
                 )
               }
-            </UserContext.Consumer>
+            </AuthContext.Consumer>
           </Fragment>
-        </FirebaseUserProvider>
+        </Auth>
       </div>
     );
   }

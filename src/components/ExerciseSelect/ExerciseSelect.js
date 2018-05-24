@@ -5,8 +5,9 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import Button from 'material-ui/Button';
 
+import AddNew from './AddNew';
+
 import styles from './ExerciseSelect.module.css';
-import { SessionContext } from '../../contexts';
 
 class ExerciseSelect extends React.Component {
   state = {
@@ -34,71 +35,9 @@ class ExerciseSelect extends React.Component {
 
     return (
       <div className={styles.ExerciseSelect}>
-        <SessionContext.Consumer>
-          {({ workoutPlan, selectExercise, exerciseInProgress, isLocked }) => {
-            const exerciseList = [
-              'Select an exercise',
-              ...workoutPlan.exercises,
-            ];
-
-            return (
-              exerciseList.length > 1 && (
-                <div className={styles.ExerciseList}>
-                  <List component="nav">
-                    <ListItem
-                      button
-                      aria-haspopup="true"
-                      aria-controls="lock-menu"
-                      aria-label="When device is locked"
-                      onClick={isLocked ? undefined : this.handleClickListItem}
-                    >
-                      <ListItemText
-                        secondary={
-                          isLocked
-                            ? 'Please finish to change '
-                            : 'Click to change'
-                        }
-                        primary={
-                          exerciseInProgress
-                            ? `Current Exercise: ${exerciseInProgress}`
-                            : 'Select an exercise'
-                        }
-                      />
-                    </ListItem>
-                  </List>
-                  <Menu
-                    id="lock-menu"
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={this.handleClose}
-                  >
-                    {exerciseList.map((option, index) => (
-                      <MenuItem
-                        key={option}
-                        disabled={index === 0}
-                        selected={index === this.state.selectedIndex}
-                        onClick={event =>
-                          this.handleMenuItemClick(
-                            event,
-                            index,
-                            selectExercise,
-                            exerciseList
-                          )
-                        }
-                      >
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                </div>
-              )
-            );
-          }}
-        </SessionContext.Consumer>
+        alrea
         <div className={styles.AddIcon}>
-          <Button variant="fab" color="secondary">
-            <AddIcon />
-          </Button>
+          <AddNew />
         </div>;
       </div>
     );
@@ -106,3 +45,65 @@ class ExerciseSelect extends React.Component {
 }
 
 export default ExerciseSelect;
+
+// <SessionContext.Consumer>
+//           {({ workoutPlan, selectExercise, exerciseInProgress, isLocked }) => {
+//             const exerciseList = [
+//               'Select an exercise',
+//               ...workoutPlan.exercises,
+//             ];
+
+//             return (
+//               exerciseList.length > 1 && (
+//                 <div className={styles.ExerciseList}>
+//                   <List component="nav">
+//                     <ListItem
+//                       button
+//                       aria-haspopup="true"
+//                       aria-controls="lock-menu"
+//                       aria-label="When device is locked"
+//                       onClick={isLocked ? undefined : this.handleClickListItem}
+//                     >
+//                       <ListItemText
+//                         secondary={
+//                           isLocked
+//                             ? 'Please finish to change '
+//                             : 'Click to change'
+//                         }
+//                         primary={
+//                           exerciseInProgress
+//                             ? `Current Exercise: ${exerciseInProgress}`
+//                             : 'Select an exercise'
+//                         }
+//                       />
+//                     </ListItem>
+//                   </List>
+//                   <Menu
+//                     id="lock-menu"
+//                     anchorEl={anchorEl}
+//                     open={Boolean(anchorEl)}
+//                     onClose={this.handleClose}
+//                   >
+//                     {exerciseList.map((option, index) => (
+//                       <MenuItem
+//                         key={option}
+//                         disabled={index === 0}
+//                         selected={index === this.state.selectedIndex}
+//                         onClick={event =>
+//                           this.handleMenuItemClick(
+//                             event,
+//                             index,
+//                             selectExercise,
+//                             exerciseList
+//                           )
+//                         }
+//                       >
+//                         {option}
+//                       </MenuItem>
+//                     ))}
+//                   </Menu>
+//                 </div>
+//               )
+//             );
+//           }}
+//         </SessionContext.Consumer>
