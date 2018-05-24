@@ -1,6 +1,5 @@
 import React, { PureComponent, createContext } from 'react';
 import PropTypes from 'prop-types';
-import { Either } from 'ramda-fantasy';
 
 import { firestore } from '../../configs/firebase';
 import getExerciseDetails from './utils/getExerciseDetails';
@@ -9,12 +8,12 @@ export const FirestoreContext = createContext('Firestore');
 
 const initialWorkoutDetails = {
   exerciseInProgress: null,
-  setsDone: null,
-  sets: null,
-  reps: null,
-  weight: null,
+  setsDone: 0,
+  sets: 0,
+  reps: 0,
+  weight: 0,
   type: null,
-  isLocked: null,
+  isLocked: false,
 };
 
 class Firestore extends PureComponent {
@@ -53,35 +52,55 @@ class Firestore extends PureComponent {
           cyclesDone: 0,
           singleRepMax,
         },
-        exercises: [name, ...(profile.exercises ? [profile.exercises] : [])],
+        exercises: [name, ...(profile.exercises && profile.exercises)],
       });
   };
 
   selectExercise = name => {
-    const exerciseDetails = getExerciseDetails(name, this.state.profile);
+    const { errorMessage, ...workoutDetails } = getExerciseDetails(
+      name,
+      this.state.profile
+    );
 
-    return Either.isLeft(exerciseDetails)
-      ? this.setState({
-          errorMessage: exerciseDetails.value.errorMessage,
-        })
-      : this.setState({
-          ...exerciseDetails,
-        });
+    if (errorMessage) {
+      this.setState({ errorMessage });
+    } else {
+      this.setState({
+        workoutDetails: {
+          ...this.state.workoutDetails,
+          ...workoutDetails,
+        },
+      });
+    }
   };
 
   incrementSet = () => {
-    this.setState({
-      // ...handleSetUpdate(this.state),
-    });
+    const { setsDone, sets } = this.state.workoutDetails;
+
+    if (setsDone < sets) {
+      this.setState({
+        workoutDetails: {
+          ...this.state.workoutDetails,
+          setsDone: setsDone + 1,
+          isLocked: true,
+        },
+      });
+    } else {
+      this.setState({
+        workoutDetails: initialWorkoutDetails,
+      });
+    }
   };
 
   render() {
     return (
       <FirestoreContext.Provider
         value={{
-          db: this.state.db,
           profile: this.state.profile,
+          workoutDetails: this.state.workoutDetails,
           addExercise: this.addExercise,
+          selectExercise: this.selectExercise,
+          incrementSet: this.incrementSet,
         }}
       >
         {this.props.children}

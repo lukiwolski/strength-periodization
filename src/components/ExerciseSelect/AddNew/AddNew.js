@@ -8,6 +8,7 @@ import Dialog, {
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import AddIcon from '@material-ui/icons/Add';
+import { FirestoreContext } from '../../Firebase/Firestore';
 
 class AddNew extends PureComponent {
   state = {

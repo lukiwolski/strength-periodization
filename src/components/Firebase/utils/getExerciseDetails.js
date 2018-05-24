@@ -1,19 +1,7 @@
-import {
-  prop,
-  without,
-  head,
-  compose,
-  curry,
-  either,
-  chain,
-  identity,
-} from 'ramda';
-import { Either, Maybe } from 'ramda-fantasy';
+import { prop, without, head, compose, curry, either, identity } from 'ramda';
 
 const ERROR_MESSAGE = 'Something went wrong, selected exercise doesnt exist';
-
 const INCREMENT_PER_CYCLE = 2.5;
-
 const trainingBlocks = {
   hypertrophy: {
     sets: 3,
@@ -33,12 +21,6 @@ const trainingBlocks = {
 };
 const priorities = ['hypertrophy', 'power', 'strength'];
 
-const matchWorkoutPlan = curry((errorMessage, name, workoutPlan) => {
-  return workoutPlan.hasOwnProperty(name)
-    ? Either.of(workoutPlan[name])
-    : Either.Left({ errorMessage });
-});
-
 const fallbackToFirst = either(identity, x => head(priorities));
 
 const removeFinished = curry((workoutCategories, category) =>
@@ -49,48 +31,35 @@ const decideCategory = compose(
   fallbackToFirst,
   head,
   removeFinished(priorities),
-  prop('categoriesFinished')
+  prop('categoriesDone')
 );
 
-const multiplyByCycles = (currentWorkout, categoryDetails) => {
-  const { base } = currentWorkout;
+const multiplyByCycles = (baseWeight, categoryDetails) => {
   const { cyclesDone, singleRepMax } = categoryDetails;
 
   return cyclesDone > 0
-    ? singleRepMax * (base + INCREMENT_PER_CYCLE * cyclesDone) / 100
-    : singleRepMax * base / 100;
+    ? singleRepMax * (baseWeight + INCREMENT_PER_CYCLE * cyclesDone) / 100
+    : singleRepMax * baseWeight / 100;
 };
 
-const buildRoutine = categoryDetails => workoutPlan => {
-  const currentCategory = prop('currentCategory', workoutPlan);
-  const currentWorkout = prop(currentCategory, categoryDetails);
+const getExerciseDetails = (name, workoutProfile) => {
+  const currentExercise = prop(name, workoutProfile);
+  if (!currentExercise) {
+    return {
+      errorMessage: ERROR_MESSAGE,
+    };
+  }
+
+  const currentCategory = decideCategory(currentExercise);
+  const { sets, reps, base } = trainingBlocks[currentCategory];
 
   return {
+    sets,
+    reps,
+    exerciseInProgress: name,
+    weight: multiplyByCycles(base, currentExercise),
     type: currentCategory,
-    ...prop(currentCategory, categoryDetails),
-    weight: multiplyByCycles(currentWorkout, workoutPlan),
   };
-};
-
-const selectCurrentCategory = workoutPlan =>
-  Maybe({
-    ...workoutPlan,
-    currentCategory: decideCategory(workoutPlan),
-  });
-
-// const getExerciseDetails = compose(
-//   chain(buildRoutine(trainingBlocks)),
-//   chain(selectCurrentCategory),
-//   matchWorkoutPlan(ERROR_MESSAGE)
-// );
-
-const getExerciseDetails = (name, profile) => {
-  const exerciseDetails = profile[name];
-  const currentCategory = decideCategory(exerciseDetails);
-
-  debugger;
-
-  return {};
 };
 
 export default getExerciseDetails;

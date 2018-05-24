@@ -5,6 +5,7 @@ import Card, { CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 
 import ConfirmationModal from './ConfirmationModal';
+import { FirestoreContext } from '../Firebase/Firestore';
 
 const styles = {
   card: {
@@ -35,7 +36,37 @@ class ExerciseCard extends PureComponent {
   render() {
     const { classes } = this.props;
 
-    return <div>asd</div>;
+    return (
+      <FirestoreContext.Consumer>
+        {({
+          workoutDetails: { exerciseInProgress, type, setsDone, sets, weight },
+        }) => (
+          <Fragment>
+            <Card className={classes.card} onClick={this.handleClickOpen}>
+              <CardContent>
+                <Typography className={classes.title} color="textSecondary">
+                  {type}
+                </Typography>
+                <Typography variant="headline" component="h2">
+                  Current set: {setsDone || 0} / {sets}
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Weight: {weight}
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Sets: {sets}
+                </Typography>
+              </CardContent>
+            </Card>
+
+            <ConfirmationModal
+              open={this.state.open}
+              onClose={this.handleClose}
+            />
+          </Fragment>
+        )}
+      </FirestoreContext.Consumer>
+    );
   }
 }
 
@@ -44,31 +75,3 @@ ExerciseCard.propTypes = {
 };
 
 export default withStyles(styles)(ExerciseCard);
-
-// <SessionContext.Consumer>
-//         {({ exerciseInProgress, type, setsDone, sets, weight }) => (
-//           <Fragment>
-//             <Card className={classes.card} onClick={this.handleClickOpen}>
-//               <CardContent>
-//                 <Typography className={classes.title} color="textSecondary">
-//                   {type}
-//                 </Typography>
-//                 <Typography variant="headline" component="h2">
-//                   Current set: {setsDone || 0} / {sets}
-//                 </Typography>
-//                 <Typography className={classes.pos} color="textSecondary">
-//                   Weight: {weight}
-//                 </Typography>
-//                 <Typography className={classes.pos} color="textSecondary">
-//                   Sets: {sets}
-//                 </Typography>
-//               </CardContent>
-//             </Card>
-
-//             <ConfirmationModal
-//               open={this.state.open}
-//               onClose={this.handleClose}
-//             />
-//           </Fragment>
-//         )}
-//       </SessionContext.Consumer>
