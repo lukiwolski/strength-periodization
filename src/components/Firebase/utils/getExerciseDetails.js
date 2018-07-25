@@ -19,7 +19,7 @@ const trainingBlocks = {
     base: 80,
   },
 };
-const priorities = ['hypertrophy', 'power', 'strength'];
+export const priorities = ['hypertrophy', 'power', 'strength'];
 
 const fallbackToFirst = either(identity, x => head(priorities));
 
@@ -34,12 +34,14 @@ const decideCategory = compose(
   prop('categoriesDone')
 );
 
-const multiplyByCycles = (baseWeight, categoryDetails) => {
+const multiplyByCycles = (prilipinsPercentage, categoryDetails) => {
   const { cyclesDone, singleRepMax } = categoryDetails;
 
   return cyclesDone > 0
-    ? singleRepMax * (baseWeight + INCREMENT_PER_CYCLE * cyclesDone) / 100
-    : singleRepMax * baseWeight / 100;
+    ? singleRepMax *
+        (prilipinsPercentage + INCREMENT_PER_CYCLE * cyclesDone) /
+        100
+    : singleRepMax * prilipinsPercentage / 100;
 };
 
 const getExerciseDetails = (name, workoutProfile) => {

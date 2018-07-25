@@ -23,7 +23,7 @@ class App extends Component {
                     <WorkoutPlan />
                   </Firestore>
                 ) : (
-                  <div>no user</div>
+                  <div>You need to login to continue</div>
                 )
               }
             </AuthContext.Consumer>

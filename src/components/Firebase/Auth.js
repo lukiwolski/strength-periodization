@@ -25,7 +25,6 @@ class Auth extends PureComponent {
 
   componentDidMount() {
     auth.onAuthStateChanged(user => {
-      console.log(user);
       this.setState({ user });
       localStorage.setItem('user', JSON.stringify(user));
     });

@@ -18,37 +18,36 @@ const styles = theme => ({
 });
 
 class ConfirmationModal extends React.Component {
+  handleSetIncrement = callback => {
+    this.props.onClose();
+    callback();
+  };
+
   render() {
-    const { classes, onClose, ...other } = this.props;
+    const { classes, onClose, showFinalMessage, ...other } = this.props;
 
     return (
       <FirestoreContext.Consumer>
         {({ incrementSet }) => (
           <Dialog
-            onClose={this.handleClose}
+            onClose={onClose}
             aria-labelledby="simple-dialog-title"
             {...other}
           >
             <DialogTitle id="simple-dialog-title">
-              Confirm completing a set ?
+              {showFinalMessage
+                ? 'You have finished all sets'
+                : 'Confirm completing a set ?'}
             </DialogTitle>
 
             <Button
               variant="raised"
               color="primary"
               size="large"
-              onClick={incrementSet}
+              onClick={() => this.handleSetIncrement(incrementSet)}
               className={classes.button}
             >
               YES
-            </Button>
-            <Button
-              variant="raised"
-              color="secondary"
-              onClick={this.props.onClose}
-              className={classes.button}
-            >
-              Cancel
             </Button>
           </Dialog>
         )}
@@ -60,6 +59,7 @@ class ConfirmationModal extends React.Component {
 ConfirmationModal.propTypes = {
   classes: PropTypes.object.isRequired,
   onClose: PropTypes.func,
+  showFinalMessage: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(ConfirmationModal);
