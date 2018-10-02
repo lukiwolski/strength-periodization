@@ -8,6 +8,7 @@ export const AuthContext = createContext('Auth');
 class Auth extends PureComponent {
   state = {
     user: JSON.parse(localStorage.getItem('user')) || null,
+    isAuthenticating: false,
   };
 
   handleSignIn = () => {
@@ -24,8 +25,12 @@ class Auth extends PureComponent {
   };
 
   componentDidMount() {
+    this.setState({
+      isAuthenticating: true,
+    });
+
     auth.onAuthStateChanged(user => {
-      this.setState({ user });
+      this.setState({ user, isAuthenticating: false });
       localStorage.setItem('user', JSON.stringify(user));
     });
   }
@@ -37,6 +42,7 @@ class Auth extends PureComponent {
           handleSignIn: this.handleSignIn,
           handleSignOut: this.handleSignOut,
           user: this.state.user,
+          isAuthenticating: this.state.isAuthenticating,
         }}
       >
         {this.props.children}

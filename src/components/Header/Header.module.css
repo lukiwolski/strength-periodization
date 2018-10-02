@@ -1,11 +1,13 @@
-.root {
-  flex-grow: 1;
-}
-
 .flex {
   flex: 1;
 }
 
 .toolbar {
   justify-content: space-between;
+}
+
+.button {
+  color: #3f51b5 !important;
+  background-color: #fff !important;
+  font-weight: 600 !important;
 }

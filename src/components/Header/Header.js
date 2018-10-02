@@ -46,7 +46,7 @@ class Header extends PureComponent {
 
                     <Button
                       onClick={displayName ? handleSignOut : handleSignIn}
-                      color="inherit"
+                      className={styles.button}
                     >
                       {displayName ? 'logout' : 'login'}
                     </Button>
