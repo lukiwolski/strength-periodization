@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Dialog, { DialogTitle } from 'material-ui/Dialog';
-import blue from 'material-ui/colors/blue';
-import Button from 'material-ui/Button';
+import { withStyles, Dialog, DialogTitle, Button } from '@material-ui/core';
+import blue from '@material-ui/core/colors/blue';
 
 import { FirestoreContext } from '../Firebase/Firestore';
 

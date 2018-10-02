@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import CssBaseline from 'material-ui/CssBaseline';
-import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
+import { CssBaseline, Paper, Typography } from '@material-ui/core';
 
 import Header from './components/Header';
 

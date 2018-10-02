@@ -1,6 +1,5 @@
 import React from 'react';
-import { CircularProgress } from 'material-ui/Progress';
-import Typography from 'material-ui/Typography';
+import { CircularProgress, Typography } from '@material-ui/core';
 
 import styles from './AuthenticationLoader.module.css';
 

@@ -1,13 +1,14 @@
 import React, { PureComponent, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import Dialog, {
+import {
+  Dialog,
   DialogTitle,
   DialogActions,
   DialogContent,
-} from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import Button from 'material-ui/Button';
+  TextField,
+  Button,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+
 import { FirestoreContext } from '../../Firebase/Firestore';
 
 class AddNew extends PureComponent {

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Dialog, { DialogTitle } from 'material-ui/Dialog';
-import Button from 'material-ui/Button';
+import { Dialog, DialogTitle, Button } from '@material-ui/core';
 
 class RemoveExerciseModal extends Component {
   handleButtonClick = () => {

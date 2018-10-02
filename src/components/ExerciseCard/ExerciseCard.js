@@ -1,8 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Card, { CardContent } from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
+import { withStyles, Card, CardContent, Typography } from '@material-ui/core';
+
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import ConfirmationModal from './ConfirmationModal';

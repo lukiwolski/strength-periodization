@@ -1,16 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
-import Dialog, {
-  DialogTitle,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-} from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-
+import { AppBar, Toolbar, Button, Typography } from '@material-ui/core';
 import { prop } from 'ramda';
 
 import { AuthContext } from '../Firebase/Auth';

@@ -1,7 +1,12 @@
 import React from 'react';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Menu, { MenuItem } from 'material-ui/Menu';
-import Typography from 'material-ui/Typography';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Typography,
+} from '@material-ui/core';
 import { prop } from 'ramda';
 
 import AddNew from './AddNew';
