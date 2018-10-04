@@ -1,57 +1,30 @@
-import React, { Component, Fragment } from 'react';
-import { CssBaseline, Paper, Typography } from '@material-ui/core';
+import React, { Fragment } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Loadable from 'react-loadable';
 
-import Header from './components/Header';
+import Header from './components/Header/Header';
+import Authentication, {
+  AuthenticationContext,
+} from './components/Authentication/Authentication';
+import Loading from './components/Loading/Loading';
 
-import Auth, { AuthContext } from './components/Firebase/Auth';
-import Firestore from './components/Firebase/Firestore';
-import WorkoutPlan from './components/WorkoutPlan/WorkoutPlan';
-import AuthenticationLoader from './components/AuthenticationLoader';
+const LoadableRouting = Loadable({
+  loader: () => import('./components/Routing/Routing'),
+  loading: Loading,
+});
 
-import styles from './App.module.css';
+const App = () => (
+  <Router>
+    <Authentication>
+      <Fragment>
+        <Header />
 
-class App extends Component {
-  render() {
-    return (
-      <div className={styles.App}>
-        <Auth>
-          <Fragment>
-            <CssBaseline />
-            <Header />
-            <AuthContext.Consumer>
-              {({ user, isAuthenticating }) => {
-                if (isAuthenticating) {
-                  return (
-                    <div className={styles.progressWrapper}>
-                      <AuthenticationLoader />
-                    </div>
-                  );
-                }
-
-                if (!isAuthenticating && user) {
-                  return (
-                    <Firestore user={user}>
-                      <WorkoutPlan />
-                    </Firestore>
-                  );
-                }
-
-                return (
-                  <div className={styles.warningWrapper}>
-                    <Paper>
-                      <Typography component="p" className={styles.warningText}>
-                        You need to be logged in to continue
-                      </Typography>
-                    </Paper>
-                  </div>
-                );
-              }}
-            </AuthContext.Consumer>
-          </Fragment>
-        </Auth>
-      </div>
-    );
-  }
-}
+        <AuthenticationContext.Consumer>
+          {authenticationProps => <LoadableRouting {...authenticationProps} />}
+        </AuthenticationContext.Consumer>
+      </Fragment>
+    </Authentication>
+  </Router>
+);
 
 export default App;

@@ -9,10 +9,9 @@ import {
 } from '@material-ui/core';
 import { prop } from 'ramda';
 
-import AddNew from './AddNew';
-import { FirestoreContext } from '../Firebase/Firestore';
-
 import styles from './ExerciseSelect.module.css';
+import { FirestoreContext } from '../Firestore/Firestore';
+import AddNew from '../AddNew/AddNew';
 
 class ExerciseSelect extends React.Component {
   state = {
@@ -41,8 +40,8 @@ class ExerciseSelect extends React.Component {
     return (
       <div className={styles.ExerciseSelect}>
         <FirestoreContext.Consumer>
-          {({ workoutDetails, selectExercise, profile }) => {
-            const { exerciseInProgress, isLocked } = workoutDetails;
+          {({ currentExerciseValues, selectExercise, profile }) => {
+            const { exerciseInProgress, isLocked } = currentExerciseValues;
             const exercises = prop('exercises', profile);
 
             const exerciseList = [

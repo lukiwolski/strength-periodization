@@ -5,8 +5,8 @@ import { withStyles, Card, CardContent, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import ConfirmationModal from './ConfirmationModal';
-import { FirestoreContext } from '../Firebase/Firestore';
 import RemoveExerciseModal from './RemoveExerciseModal';
+import { FirestoreContext } from '../Firestore/Firestore';
 
 const styles = {
   card: {
@@ -62,18 +62,13 @@ class ExerciseCard extends PureComponent {
     return (
       <FirestoreContext.Consumer>
         {({
-          workoutDetails: {
-            exerciseInProgress,
-            type,
-            setsDone,
-            sets,
-            weight,
-            reps,
-          },
+          currentExerciseValues: { type, sets, weight, reps },
           removeExercise,
+          setsDone,
+          selectedExercise,
         }) => (
           <Fragment>
-            {exerciseInProgress && (
+            {selectedExercise && (
               <Card
                 className={classes.card}
                 onClick={() => this.handleOpenModal('confirmModalopen')}

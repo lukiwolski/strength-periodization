@@ -1,7 +1,11 @@
 import { prop, without, head, compose, curry, either, identity } from 'ramda';
 
 const ERROR_MESSAGE = 'Something went wrong, selected exercise doesnt exist';
+
+// Exercise volume increase after each cycle
 const INCREMENT_PER_CYCLE = 2.5;
+
+// Predefined values for each training type from Prilipins chart
 const trainingBlocks = {
   hypertrophy: {
     sets: 3,
@@ -19,6 +23,7 @@ const trainingBlocks = {
     base: 80,
   },
 };
+
 export const priorities = ['hypertrophy', 'power', 'strength'];
 
 const fallbackToFirst = either(identity, x => head(priorities));
@@ -38,13 +43,13 @@ const multiplyByCycles = (prilipinsPercentage, categoryDetails) => {
   const { cyclesDone, singleRepMax } = categoryDetails;
 
   return cyclesDone > 0
-    ? singleRepMax *
-        (prilipinsPercentage + INCREMENT_PER_CYCLE * cyclesDone) /
+    ? (singleRepMax *
+        (prilipinsPercentage + INCREMENT_PER_CYCLE * cyclesDone)) /
         100
-    : singleRepMax * prilipinsPercentage / 100;
+    : (singleRepMax * prilipinsPercentage) / 100;
 };
 
-const getExerciseDetails = (name, workoutProfile) => {
+export const getExerciseValues = (name, workoutProfile) => {
   const currentExercise = prop(name, workoutProfile);
   if (!currentExercise) {
     return {
@@ -53,15 +58,16 @@ const getExerciseDetails = (name, workoutProfile) => {
   }
 
   const currentCategory = decideCategory(currentExercise);
-  const { sets, reps, base } = trainingBlocks[currentCategory];
+  const { sets, reps, base } = prop(currentCategory, trainingBlocks);
 
   return {
     sets,
     reps,
-    exerciseInProgress: name,
     weight: multiplyByCycles(base, currentExercise),
     type: currentCategory,
   };
 };
 
-export default getExerciseDetails;
+const NUMBER_OF_CATEGORIES = priorities.length - 1; // wtf ?
+export const checkIfShouldIncrementCycles = categoriesDone =>
+  categoriesDone.length === NUMBER_OF_CATEGORIES;

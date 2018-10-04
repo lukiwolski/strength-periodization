@@ -1,34 +1,39 @@
 {
   "name": "strength-periodization",
   "homepage": "https://lukiwolski.github.io/strength-periodization",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "dependencies": {
-    "@material-ui/core": "^3.1.2",
-    "@material-ui/icons": "^3.0.1",
-    "eslint-plugin-prettier": "^2.6.0",
-    "firebase": "^5.0.1",
-    "firebaseui": "^3.0.0",
-    "ramda": "^0.25.0",
-    "ramda-fantasy": "^0.8.0",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-loadable": "^5.4.0",
-    "react-router": "^4.2.0",
-    "react-scripts-cssmodules": "1.1.10"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "@material-ui/core": "^3.1.2",
+    "@material-ui/icons": "^3.0.1",
+    "firebase": "^5.5.2",
+    "ramda": "^0.25.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-loadable": "^5.5.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.0.3"
   },
   "devDependencies": {
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-config-react-app": "^2.1.0",
-    "gh-pages": "^1.2.0",
-    "prettier": "1.12.1"
-  }
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-config-react-app": "^3.0.3",
+    "eslint-plugin-prettier": "^3.0.0",
+    "gh-pages": "^2.0.0",
+    "prettier": "^1.14.3"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

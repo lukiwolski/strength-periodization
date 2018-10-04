@@ -1,20 +1,25 @@
 import React, { PureComponent, createContext } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { auth, provider } from '../../configs/firebase';
+import { auth, provider } from '../../utils/firestore';
 
-export const AuthContext = createContext('Auth');
+export const AuthenticationContext = createContext();
 
-class Auth extends PureComponent {
+class Authentication extends PureComponent {
   state = {
     user: JSON.parse(localStorage.getItem('user')) || null,
     isAuthenticating: false,
+    signingWithPopup: false,
   };
 
   handleSignIn = () => {
+    // @TODO Add loading screen when authenticating in other tab
+    // this.setState({ signingWithPopup: true });
     auth.signInWithPopup(provider).then(signIn => {
-      this.setState({ user: signIn.user });
+      this.setState({ user: signIn.user, signingWithPopup: false });
       localStorage.setItem('user', JSON.stringify(signIn.user));
+      this.props.history.push('/overview');
     });
   };
 
@@ -22,12 +27,11 @@ class Auth extends PureComponent {
     auth.signOut();
     this.setState({ user: null, profile: null });
     localStorage.clear();
+    this.props.history.push('/');
   };
 
   componentDidMount() {
-    this.setState({
-      isAuthenticating: true,
-    });
+    this.setState({ isAuthenticating: true });
 
     auth.onAuthStateChanged(user => {
       this.setState({ user, isAuthenticating: false });
@@ -37,7 +41,7 @@ class Auth extends PureComponent {
 
   render() {
     return (
-      <AuthContext.Provider
+      <AuthenticationContext.Provider
         value={{
           handleSignIn: this.handleSignIn,
           handleSignOut: this.handleSignOut,
@@ -46,13 +50,13 @@ class Auth extends PureComponent {
         }}
       >
         {this.props.children}
-      </AuthContext.Provider>
+      </AuthenticationContext.Provider>
     );
   }
 }
 
-Auth.propTypes = {
+Authentication.propTypes = {
   children: PropTypes.element,
 };
 
-export default Auth;
+export default withRouter(Authentication);

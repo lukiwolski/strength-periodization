@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { AppBar, Toolbar, Button, Typography } from '@material-ui/core';
 import { prop } from 'ramda';
 
-import { AuthContext } from '../Firebase/Auth';
+import { AuthenticationContext } from '../Authentication/Authentication';
 
 import styles from './Header.module.css';
 
@@ -21,31 +21,30 @@ class Header extends PureComponent {
 
   render() {
     return (
-      <div className={styles.root}>
-        <AppBar position="static">
-          <Toolbar className={styles.toolbar}>
-            <AuthContext.Consumer>
-              {({ user, handleSignOut, handleSignIn }) => {
-                const displayName = prop('displayName', user);
-                return (
-                  <Fragment>
-                    <Typography component="p" color="inherit">
-                      {displayName}
-                    </Typography>
+      <AppBar position="static">
+        <Toolbar className={styles.toolbar}>
+          <AuthenticationContext.Consumer>
+            {({ user, handleSignOut, handleSignIn }) => {
+              const displayName = prop('displayName', user);
 
-                    <Button
-                      onClick={displayName ? handleSignOut : handleSignIn}
-                      className={styles.button}
-                    >
-                      {displayName ? 'logout' : 'login'}
-                    </Button>
-                  </Fragment>
-                );
-              }}
-            </AuthContext.Consumer>
-          </Toolbar>
-        </AppBar>
-      </div>
+              return (
+                <Fragment>
+                  <Typography component="p" color="inherit">
+                    {displayName}
+                  </Typography>
+
+                  <Button
+                    onClick={displayName ? handleSignOut : handleSignIn}
+                    className={styles.button}
+                  >
+                    {displayName ? 'logout' : 'login'}
+                  </Button>
+                </Fragment>
+              );
+            }}
+          </AuthenticationContext.Consumer>
+        </Toolbar>
+      </AppBar>
     );
   }
 }

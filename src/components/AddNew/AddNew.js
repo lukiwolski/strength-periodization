@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-import { FirestoreContext } from '../../Firebase/Firestore';
+import { FirestoreContext } from '../Firestore/Firestore';
 
 class AddNew extends PureComponent {
   state = {
@@ -75,7 +75,7 @@ class AddNew extends PureComponent {
                 >
                   Confirm
                 </Button>
-                <Button onClick={this.handleClose} color="primary">
+                <Button onClick={() => this.handleClose()} color="primary">
                   Cancel
                 </Button>
               </DialogActions>

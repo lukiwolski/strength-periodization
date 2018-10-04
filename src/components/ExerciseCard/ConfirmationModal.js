@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles, Dialog, DialogTitle, Button } from '@material-ui/core';
 import blue from '@material-ui/core/colors/blue';
 
-import { FirestoreContext } from '../Firebase/Firestore';
+import { FirestoreContext } from '../Firestore/Firestore';
 
 const styles = theme => ({
   avatar: {
